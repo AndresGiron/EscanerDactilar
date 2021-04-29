@@ -6,12 +6,12 @@ from skimage import color,data
 from skimage.filters import threshold_otsu
 from skimage.filters import gaussian
 #numpy
-import numpy as np
+import numpy as nps
 #PIL
 from PIL import Image
 
 #Leer imagen 
-matrixPhoto = plt.imread("Python-Workspace/ProyectoAnalMet/sub2/21.jpg")
+matrixPhoto = plt.imread("./Images/sub2/21.jpg")
 #Convertir a gris
 grayPhoto = color.rgb2gray(matrixPhoto)
 #Declarar tresh 
