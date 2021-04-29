@@ -11,7 +11,7 @@ import numpy as np
 from PIL import Image
 
 #Leer imagen 
-matrixPhoto = plt.imread("Python-Workspace/ProyectoAnalMet/sub2/21.jpg")
+matrixPhoto = plt.imread("./Images/sub2/21.jpg")
 #Convertir a gris
 grayPhoto = color.rgb2gray(matrixPhoto)
 #Declarar tresh 
