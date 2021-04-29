@@ -6,7 +6,7 @@ from skimage import color,data
 from skimage.filters import threshold_otsu
 from skimage.filters import gaussian
 #numpy
-import numpy as nps
+import numpy as np
 #PIL
 from PIL import Image
 
