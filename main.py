@@ -20,13 +20,40 @@ def plot_comparison(original, filtered, title):
     ax2.set_title(title)
     ax2.axis("off")
 
-#Leer imagen 
-matrixPhoto = plt.imread("./Images/sub2/21.jpg")
-#Suavizar
-gaussian_photo = gaussian(matrixPhoto, multichannel= False)
-#Convertir a gris
-grayPhoto = color.rgb2gray(gaussian_photo)
-#Declarar tresh 
+
+#Extraer una mano
+def extractHand(carpeta):
+    #arreglo para la mano
+    handy = [0,0,0,0,0]
+
+    for x in range(0,5):
+        #Leer imagen 
+        matrixFinger = plt.imread("./Images/sub"+str(carpeta)+"/"+str(carpeta)+str(x+1)+".jpg")
+        #Suavizar
+        gaussianFinger = gaussian(matrixFinger, multichannel= False)
+        #Convertir a gris
+        grayFinger = color.rgb2gray(gaussianFinger)
+        #Convertir matriz a arreglo
+        fingerInVector = np.concatenate(grayFinger)
+        fingerInList = fingerInVector.tolist()
+        handy[x] = fingerInList
+
+    handyInMatrix = np.array(handy)
+    #print(handyInMatrix)
+    return handyInMatrix
+    
+#Base de datos
+dataBase = []
+for i in range(1,51):
+    dataBase.append(extractHand(i))
+
+print(dataBase)
+
+
+    
+
+
+"""#Declarar tresh 
 thresh = threshold_otsu(grayPhoto)
 #Binary(TRUE/FALSE)
 binary = grayPhoto > thresh
@@ -37,18 +64,19 @@ def convertir_binario(binaryEN):
         for y in range(np.shape(binaryEN)[1]):
             if binaryEN[x][y]:
                 binary_255_0[x][y] = 255
-                print(binary_255_0[x][y])
+                #print(binary_255_0[x][y])
             else:
                 binary_255_0[x][y] = 0
-                print(binary_255_0[x][y])
+                #print(binary_255_0[x][y])
     return 0
+convertir_binario(binary)"""
 
-convertir_binario(binary)
-print(binary_255_0)
 
+#print(binary_255_0)
+#print(grayPhoto)
 #mostrando la imagen 
-plot_comparison(matrixPhoto,binary_255_0,"Binary")
-plt.show()
+#plot_comparison(matrixPhoto,grayPhoto,"Binary")
+#plt.show()
 #mostrando la matriz
 #print(binary)
 
