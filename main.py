@@ -60,7 +60,7 @@ handy = [0,0,0,0,0]
 
 for x in range(0,5):
     #Leer imagen 
-    matrixFinger = plt.imread("./Images/sub2/2"+str(x+1)+".jpg")
+    matrixFinger = plt.imread("./Images/newFile/"+str(x+1)+".jpg")
     #Suavizar
     #gaussianFinger = gaussian(matrixFinger, multichannel= False)
     #Convertir a gris
