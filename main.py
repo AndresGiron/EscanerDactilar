@@ -20,7 +20,6 @@ def plot_comparison(original, filtered, title):
     ax2.set_title(title)
     ax2.axis("off")
 
-
 #Extraer una mano
 def extractHand(carpeta):
     #arreglo para la mano
@@ -30,54 +29,72 @@ def extractHand(carpeta):
         #Leer imagen 
         matrixFinger = plt.imread("./Images/sub"+str(carpeta)+"/"+str(carpeta)+str(x+1)+".jpg")
         #Suavizar
-        gaussianFinger = gaussian(matrixFinger, multichannel= False)
+        #gaussianFinger = gaussian(matrixFinger, multichannel= False)
         #Convertir a gris
-        grayFinger = color.rgb2gray(gaussianFinger)
+        grayFinger = color.rgb2gray(matrixFinger)
         #Convertir matriz a arreglo
         fingerInVector = np.concatenate(grayFinger)
         fingerInList = fingerInVector.tolist()
         handy[x] = fingerInList
-
+    #Convertir la mano en una matriz
     handyInMatrix = np.array(handy)
-    #print(handyInMatrix)
-    return handyInMatrix
+    #transponemos la matriz de la mano para que los dedos esten en las columnas
+    transposeHandy = np.transpose(handyInMatrix)
+    #haciendo el SVD
+    u,s,vh = np.linalg.svd(transposeHandy, full_matrices = False)
+    #transponemos la matriz U para sacar la columna
+    transposeU = np.transpose(u)
+    #devolver matriz U 
+    return transposeU[0] 
     
 #Base de datos
 dataBase = []
+
+#Extraer todas las manos y guardarlas en nuestro arreglo dataBase
 for i in range(1,51):
     dataBase.append(extractHand(i))
 
-print(dataBase)
+#rint(dataBase[0])
+
+handy = [0,0,0,0,0]
+
+for x in range(0,5):
+    #Leer imagen 
+    matrixFinger = plt.imread("./Images/sub2/2"+str(x+1)+".jpg")
+    #Suavizar
+    #gaussianFinger = gaussian(matrixFinger, multichannel= False)
+    #Convertir a gris
+    grayFinger = color.rgb2gray(matrixFinger)
+    #Convertir matriz a arreglo
+    fingerInVector = np.concatenate(grayFinger)
+    fingerInList = fingerInVector.tolist()
+    handy[x] = fingerInList
+#Convertir la mano en una matriz
+handyInMatrix = np.array(handy)
+transposeHandy = np.transpose(handyInMatrix) 
+
+#sacar los residuos 
+residuos = []
+for i in range(0,50):
+    #usamos la funcion lstsq para obtener el residuo vectorial 
+    x, residual,rank,singular = np.linalg.lstsq(transposeHandy,dataBase[i],-1)
+    #pasamos los residuos en formato lista
+    residualList = residual.tolist()
+    #metemos los residuos en un array para buscar al sujeto 
+    residuos.append(residualList)
+
+#El sujeto sera aquel cuya posicion en el arreglo tenga el numero
+sujeto = np.amin(residuos)
+print(sujeto)
+
+#Buscando al sujeto 
+for i in range(0,50):
+    if (sujeto == residuos[i]):
+        print("La mano pertenece al sujeto "+str(i+1))
+        break
 
 
-    
 
-
-"""#Declarar tresh 
-thresh = threshold_otsu(grayPhoto)
-#Binary(TRUE/FALSE)
-binary = grayPhoto > thresh
-#Binary(0/255)
-binary_255_0 = np.zeros((200,200))
-def convertir_binario(binaryEN):
-    for x in range(np.shape(binaryEN)[0]):
-        for y in range(np.shape(binaryEN)[1]):
-            if binaryEN[x][y]:
-                binary_255_0[x][y] = 255
-                #print(binary_255_0[x][y])
-            else:
-                binary_255_0[x][y] = 0
-                #print(binary_255_0[x][y])
-    return 0
-convertir_binario(binary)"""
-
-
-#print(binary_255_0)
-#print(grayPhoto)
-#mostrando la imagen 
-#plot_comparison(matrixPhoto,grayPhoto,"Binary")
-#plt.show()
-#mostrando la matriz
-#print(binary)
+#lstsq
 
 
