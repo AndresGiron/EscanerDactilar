@@ -65,7 +65,7 @@ for x in range(0,5):
     #gaussianFinger = gaussian(matrixFinger, multichannel= False)
     #Convertir a gris
     grayFinger = color.rgb2gray(matrixFinger)
-    #Convertir matriz a arreglo
+    #Convertir matriz a arregloss
     fingerInVector = np.concatenate(grayFinger)
     fingerInList = fingerInVector.tolist()
     handy[x] = fingerInList
@@ -85,6 +85,12 @@ for i in range(0,50):
 
 #El sujeto sera aquel cuya posicion en el arreglo tenga el numero
 sujeto = np.amin(residuos)
+
+print(0.000000000000000000000001)
+if (sujeto > 0.000000000000000000001):
+    print("El sujeto no se encuentra en la base de datos")
+    exit()
+
 print(sujeto)
 
 #Buscando al sujeto 
