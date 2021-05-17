@@ -1,5 +1,6 @@
 #matplotlib
 import matplotlib.pyplot as plt
+from numpy.core.fromnumeric import transpose
 #skimage
 import skimage as io 
 from skimage import color,data
@@ -42,10 +43,8 @@ def extractHand(carpeta):
     transposeHandy = np.transpose(handyInMatrix)
     #haciendo el SVD
     u,s,vh = np.linalg.svd(transposeHandy, full_matrices = False)
-    #transponemos la matriz U para sacar la columna
-    transposeU = np.transpose(u)
     #devolver matriz U 
-    return transposeU[0] 
+    return u 
     
 #Base de datos
 dataBase = []
@@ -54,30 +53,27 @@ dataBase = []
 for i in range(1,51):
     dataBase.append(extractHand(i))
 
-#rint(dataBase[0])
+#Leer imagen 
+matrixFinger = plt.imread("./Images/newFile/dedo.jpg")
+#Suavizar
+#gaussianFinger = gaussian(matrixFinger, multichannel= False)
+#Convertir a gris
+grayFinger = color.rgb2gray(matrixFinger)
+#Convertir matriz a arregloss
+fingerInVector = np.concatenate(grayFinger)
+fingerInList = fingerInVector.tolist()
+fingerInArray = [fingerInList]
+fingerInArray = np.transpose(fingerInArray)
 
-handy = [0,0,0,0,0]
 
-for x in range(0,5):
-    #Leer imagen 
-    matrixFinger = plt.imread("./Images/newFile/"+str(x+1)+".jpg")
-    #Suavizar
-    #gaussianFinger = gaussian(matrixFinger, multichannel= False)
-    #Convertir a gris
-    grayFinger = color.rgb2gray(matrixFinger)
-    #Convertir matriz a arregloss
-    fingerInVector = np.concatenate(grayFinger)
-    fingerInList = fingerInVector.tolist()
-    handy[x] = fingerInList
-#Convertir la mano en una matriz
-handyInMatrix = np.array(handy)
-transposeHandy = np.transpose(handyInMatrix) 
+print(np.shape(fingerInArray))
+print(np.shape(dataBase[0]))
 
 #sacar los residuos 
 residuos = []
 for i in range(0,50):
     #usamos la funcion lstsq para obtener el residuo vectorial 
-    x, residual,rank,singular = np.linalg.lstsq(transposeHandy,dataBase[i],-1)
+    x, residual,rank,singular = np.linalg.lstsq(dataBase[i],fingerInArray,-1)
     #pasamos los residuos en formato lista
     residualList = residual.tolist()
     #metemos los residuos en un array para buscar al sujeto 
@@ -86,8 +82,8 @@ for i in range(0,50):
 #El sujeto sera aquel cuya posicion en el arreglo tenga el numero
 sujeto = np.amin(residuos)
 
-print(0.000000000000000000000001)
-if (sujeto > 0.000000000000000000001):
+print(residuos)
+if (sujeto > 0.0000000000000000001):
     print("El sujeto no se encuentra en la base de datos")
     exit()
 
@@ -98,9 +94,3 @@ for i in range(0,50):
     if (sujeto == residuos[i]):
         print("La mano pertenece al sujeto "+str(i+1))
         break
-
-
-
-#lstsq
-
-
