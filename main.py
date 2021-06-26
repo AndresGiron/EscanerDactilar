@@ -2,24 +2,11 @@
 import matplotlib.pyplot as plt
 from numpy.core.fromnumeric import transpose
 #skimage
-import skimage as io 
 from skimage import color,data
-from skimage.filters import threshold_otsu
-from skimage.filters import gaussian
 #numpy
 import numpy as np
 #PIL
 from PIL import Image
-
-#Funcion para ver dos imagenes
-def plot_comparison(original, filtered, title):
-    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(8,6), sharex=True, sharey=True)
-    ax1.imshow(original, cmap = plt.cm.gray)
-    ax1.set_title("Original")
-    ax1.axis("off")
-    ax2.imshow(filtered, cmap = plt.cm.gray)
-    ax2.set_title(title)
-    ax2.axis("off")
 
 #Extraer una mano
 def extractHand(carpeta):
@@ -29,8 +16,6 @@ def extractHand(carpeta):
     for x in range(0,5):
         #Leer imagen 
         matrixFinger = plt.imread("./Images/sub"+str(carpeta)+"/"+str(carpeta)+str(x+1)+".jpg")
-        #Suavizar
-        #gaussianFinger = gaussian(matrixFinger, multichannel= False)
         #Convertir a gris
         grayFinger = color.rgb2gray(matrixFinger)
         #Convertir matriz a arreglo
@@ -55,8 +40,6 @@ for i in range(1,51):
 
 #Leer imagen 
 matrixFinger = plt.imread("./Images/newFile/dedo.jpg")
-#Suavizar
-#gaussianFinger = gaussian(matrixFinger, multichannel= False)
 #Convertir a gris
 grayFinger = color.rgb2gray(matrixFinger)
 #Convertir matriz a arregloss
@@ -71,9 +54,9 @@ print(np.shape(dataBase[0]))
 
 #sacar los residuos 
 residuos = []
-for i in range(0,50):
+for i in dataBase:
     #usamos la funcion lstsq para obtener el residuo vectorial 
-    x, residual,rank,singular = np.linalg.lstsq(dataBase[i],fingerInArray,-1)
+    x, residual,rank,singular = np.linalg.lstsq(i,fingerInArray,-1)
     #pasamos los residuos en formato lista
     residualList = residual.tolist()
     #metemos los residuos en un array para buscar al sujeto 
