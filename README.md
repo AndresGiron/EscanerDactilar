@@ -13,6 +13,7 @@ la huella debe ir con el nombre "dedo.jpg".
 
 # Requerimientos
 Se deben instalar las siguientes librerias:
+
 -pip install matplotlib
 
 -pip install scikit-image
