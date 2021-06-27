@@ -48,10 +48,6 @@ fingerInList = fingerInVector.tolist()
 fingerInArray = [fingerInList]
 fingerInArray = np.transpose(fingerInArray)
 
-
-print(np.shape(fingerInArray))
-print(np.shape(dataBase[0]))
-
 #sacar los residuos 
 residuos = []
 for i in dataBase:
