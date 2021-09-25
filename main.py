@@ -58,7 +58,7 @@ for i in dataBase:
     #metemos los residuos en un array para buscar al sujeto 
     residuos.append(residualList)
 
-#El sujeto sera aquel cuya posicion en el arreglo tenga el numero
+#El sujeto sera aquel cuya posicion en el arreglo tenga el numero minimo
 sujeto = np.amin(residuos)
 
 print(residuos)
