@@ -2,11 +2,10 @@
 import matplotlib.pyplot as plt
 from numpy.core.fromnumeric import transpose
 #skimage
-from skimage import color,data
+from skimage import color
 #numpy
 import numpy as np
-#PIL
-from PIL import Image
+
 
 #Extraer el conjunto de muestras
 def extractFingers(carpeta):
