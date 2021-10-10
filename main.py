@@ -61,7 +61,7 @@ for i in dataBase:
 sujeto = np.amin(residuos)
 
 print(residuos)
-if (sujeto > 0.0000000000000000001):
+if (sujeto > 100):
     print("El sujeto no se encuentra en la base de datos")
     exit()
 
