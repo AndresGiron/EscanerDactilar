@@ -8,10 +8,10 @@ import numpy as np
 #PIL
 from PIL import Image
 
-#Extraer una mano
-def extractHand(carpeta):
-    #arreglo para la mano
-    handy = [0,0,0,0,0]
+#Extraer el conjunto de muestras
+def extractFingers(carpeta):
+    #arreglo para el conjunto de muestras
+    fingers = [0,0,0,0,0]
 
     for x in range(0,5):
         #Leer imagen 
@@ -21,22 +21,22 @@ def extractHand(carpeta):
         #Convertir matriz a arreglo
         fingerInVector = np.concatenate(grayFinger)
         fingerInList = fingerInVector.tolist()
-        handy[x] = fingerInList
-    #Convertir la mano en una matriz
-    handyInMatrix = np.array(handy)
-    #transponemos la matriz de la mano para que los dedos esten en las columnas
-    transposeHandy = np.transpose(handyInMatrix)
+        fingers[x] = fingerInList
+    #Convertir el conjunto de muestras en una matriz 
+    fingerInMatrix = np.array(fingers)
+    #transponemos la matriz del conjunto de muestras para que los dedos esten en las columnas
+    transposeFingers = np.transpose(fingerInMatrix)
     #haciendo el SVD
-    u,s,vh = np.linalg.svd(transposeHandy, full_matrices = False)
+    u,s,vh = np.linalg.svd(transposeFingers, full_matrices = False)
     #devolver matriz U 
     return u 
     
 #Base de datos
 dataBase = []
 
-#Extraer todas las manos y guardarlas en nuestro arreglo dataBase
+#Extraer todos los conjuntos de muestras y guardarlas en nuestro arreglo dataBase
 for i in range(1,51):
-    dataBase.append(extractHand(i))
+    dataBase.append(extractFingers(i))
 
 #Leer imagen 
 matrixFinger = plt.imread("./Images/newFile/dedo.jpg")
@@ -71,5 +71,5 @@ print(sujeto)
 #Buscando al sujeto 
 for i in range(0,50):
     if (sujeto == residuos[i]):
-        print("La mano pertenece al sujeto "+str(i+1))
+        print("El dedo pertenece al sujeto "+str(i+1))
         break
